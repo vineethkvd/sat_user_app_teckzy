@@ -5,61 +5,60 @@ import 'package:http/http.dart' as http;
 
 import '../../../core/utils/helpers/cache_helper/cache_helper.dart';
 import '../../../core/utils/helpers/network/helpers/api_endpoints.dart';
+import '../../../core/utils/helpers/network/helpers/app_exceptions.dart';
+import '../../../core/utils/helpers/network/helpers/base_client.dart';
+import '../../../core/utils/helpers/network/helpers/base_controller.dart';
+import '../../../core/utils/helpers/network/helpers/dialog_helper.dart';
 import '../model/feeder_status_destination_model.dart';
 
 
-class FeederStatusEndController extends GetxController {
-  String msg = '';
 
-  var feederStatusEndList = <FeederStatusDestinationModel>[].obs;
+class FeederStatusEndController extends GetxController {
+  var feederStatusDestinationModel = FeederStatusDestinationModel().obs;
+  var feederStatusDestinationList = <Data>[].obs;
+
   Future<void> fetchFeederStatusEndPoint({required String endPoint}) async {
+    final baseController = BaseController();
+    // baseController.showLoading('Fetching slider data...');
     const apiUrl = ApiEndPoints.baseURL + ApiEndPoints.feederStatusEnd;
+
+
     const apiToken = ApiEndPoints.apiToken;
     var routeId = await CacheHelper.getData('routeId');
-
-    final headers = {'Content-Type': 'application/json'};
     final requestData = {
-      "api_key":apiToken,
-      "route_id":routeId,
-      "end_point":endPoint
+      "api_key": apiToken,
+      "route_id": routeId,
+      "end_point": endPoint
     };
-    final jsonBody = json.encode(requestData);
-
     try {
-      final response = await http.post(Uri.parse(apiUrl), headers: headers, body: jsonBody);
+      final baseClient = BaseClient();
+      var response = await baseClient.post(apiUrl, requestData);
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        final feederStatusDestinationModel = FeederStatusDestinationModel.fromJson(responseData);
+        feederStatusDestinationModel(FeederStatusDestinationModel.fromJson(responseData));
 
-        if (feederStatusDestinationModel.status != null && feederStatusDestinationModel.status == true) {
-          msg = feederStatusDestinationModel.msg ?? '';
-
-          // Convert each Data object into a FeederStatusModel object
-          if (feederStatusDestinationModel.data != null) {
-
-            feederStatusEndList.assignAll(feederStatusDestinationModel.data!.map((data) {
-              return FeederStatusDestinationModel(
-                status: feederStatusDestinationModel.status,
-                msg: feederStatusDestinationModel.msg,
-                data: [data], // Wrap the Data object in a list
-              );
-            }));
-          } else {
-            throw Exception('Data is null in the response');
-          }
+        if (feederStatusDestinationModel.value.status == true) {
+          print("success");
+          feederStatusDestinationList.value.clear();
+          feederStatusDestinationList
+              .assignAll(feederStatusDestinationModel.value.data ?? []);
         } else {
           throw Exception('Status is not true');
         }
       } else {
-        throw Exception('Request failed with status: ${response.statusCode}');
+        throw Exception('Failed to fetch slider data');
       }
-    } on http.ClientException catch (e) {
-      throw Exception('HTTP Client Exception: $e');
-    } on SocketException catch (e) {
-      throw Exception('Socket Exception: $e');
-    } catch (e) {
-      throw Exception('Error: $e');
+    } catch (error) {
+      if (error is BadRequestException) {
+        var apiError = json.decode(error.message!);
+        DialogHelper.showErroDialog(description: apiError["reason"]);
+      } else {
+        baseController.handleError(error);
+      }
+    } finally {
+      // baseController.hideLoading();
+      // loading.value = true;
     }
   }
 }

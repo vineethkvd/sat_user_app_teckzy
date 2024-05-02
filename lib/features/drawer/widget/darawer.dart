@@ -29,6 +29,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           bottomRight: Radius.circular(20.0),
         ),
       ),
+      backgroundColor: AppColor.appMainColor,
       child: Wrap(
         runSpacing: 10,
         children: [
@@ -56,7 +57,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           InkWell(
             onTap: () {
-              Get.to(ShowTicketScreen(),transition: Transition.leftToRightWithFade);
+              Get.back();
+              Get.to(ShowTicketScreen(),
+                  transition: Transition.leftToRightWithFade);
             },
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -75,9 +78,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           InkWell(
             onTap: () {
-
-                Get.to(BuyTicketScreen(),transition: Transition.leftToRightWithFade);
-
+              Get.back();
+              Get.to(BuyTicketScreen(),
+                  transition: Transition.leftToRightWithFade);
             },
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -96,7 +99,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           InkWell(
             onTap: () {
-              Get.to(FeederStatusScreen(),transition: Transition.leftToRightWithFade);
+              Get.back();
+              Get.to(FeederStatusScreen(),
+                  transition: Transition.leftToRightWithFade);
             },
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -115,7 +120,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           InkWell(
             onTap: () {
-              Get.to(HistoryScreen(),transition: Transition.leftToRightWithFade);
+              Get.back();
+              Get.to(HistoryScreen(),
+                  transition: Transition.leftToRightWithFade);
             },
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -134,7 +141,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           InkWell(
             onTap: () {
-              Get.to(NotificationScreen(),transition: Transition.leftToRightWithFade);
+              Get.back();
+              Get.to(NotificationScreen(),
+                  transition: Transition.leftToRightWithFade);
             },
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -180,7 +189,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     transition: Transition.leftToRightWithFade);
               });
             },
-            child: Padding(
+            child: const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: ListTile(
                 titleAlignment: ListTileTitleAlignment.center,
@@ -216,7 +225,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
         ],
       ),
-      backgroundColor: AppColor.appMainColor,
     );
   }
 }

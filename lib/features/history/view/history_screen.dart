@@ -88,8 +88,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             child: Text('Error fetching data: ${snapshot.error}'),
                           );
                         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                          return Center(
-                            child: Text('No data available.'),
+                          return Container(
+                            height: Get.height*0.75.h,
+                            child: Center(
+                              child: Text('No data available.',style: TextStyle(color: Colors.white),),
+                            ),
                           );
                         } else {
                           final dataList = snapshot.data!;

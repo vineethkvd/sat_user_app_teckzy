@@ -100,42 +100,49 @@ class _ShowQrScreenState extends State<ShowQrScreen> {
                     ),
                   ),
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "${widget.place}",
-                        style: TextStyle(
-                            color: AppColor.whiteColor,
-                            fontFamily: 'Inter-Regular',
-                            fontSize: 14.sp),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 30.sp),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:  EdgeInsets.symmetric(vertical: 10.sp),
+                        child: Text(
+                          "${widget.place}",
+                          style: TextStyle(
+                              color: AppColor.whiteColor,
+                              fontFamily: 'Inter-Regular',
+                              fontSize: 14.sp),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "${widget.expiry}",
-                        style: TextStyle(
-                            color: AppColor.whiteColor,
-                            fontFamily: 'Inter-Regular',
-                            fontSize: 14.sp),
+                      Padding(
+                        padding:  EdgeInsets.symmetric(vertical: 10.sp),
+                        child: Text(
+                          "Type: ${widget.type}",
+                          style: TextStyle(
+                              color: AppColor.whiteColor,
+                              fontFamily: 'Inter-Regular',
+                              fontSize: 14.sp),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "${widget.type}",
-                        style: TextStyle(
-                            color: AppColor.whiteColor,
-                            fontFamily: 'Inter-Regular',
-                            fontSize: 14.sp),
+                      Padding(
+                        padding:  EdgeInsets.symmetric(vertical: 15.sp),
+                        child: Text(
+                          "Validity: ${widget.expiry}",
+                          style: TextStyle(
+                              color: AppColor.whiteColor,
+                              fontFamily: 'Inter-Regular',
+                              fontSize: 14.sp),
+                        ),
                       ),
-                    ),
-                  ],
+
+                    ],
+                  ),
                 )
 
               ],

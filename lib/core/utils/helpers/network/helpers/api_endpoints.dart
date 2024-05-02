@@ -18,7 +18,7 @@ class ApiEndPoints {
 
   static const String register = "register.php";
   static const String route = "route.php";
-  static const String feederStatusEnd = " feeder_status_end.php";
+  static const String feederStatusEnd = "feeder_status_end.php";
   static const String feederStatusPickup = "feeder_status_pickup.php";
 
   static const String findRoute = "find_route.php";

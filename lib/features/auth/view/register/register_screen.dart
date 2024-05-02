@@ -217,10 +217,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                                   child:
                                                       DropdownButtonFormField<
                                                           DropdownItemsModel>(
-                                                    hint: Text(
-                                                      'Select Route',
-                                                      style: TextStyle(
-                                                          color: Colors.black),
+                                                    hint: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 10),
+                                                      child: Text(
+                                                        'Select Route',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black),
+                                                      ),
                                                     ),
                                                     decoration: InputDecoration(
                                                       border: InputBorder
@@ -287,114 +293,88 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                                     color: Colors
                                                         .grey), // You can add border for visual distinction
                                               ),
-                                              child: fetchcampuscontroller
-                                                      .campusdataList
-                                                      .value
-                                                      .isNotEmpty
-                                                  ? DropdownButton<String>(
-                                                      dropdownColor:
-                                                          Colors.white,
-                                                      underline: Container(),
-                                                      hint:
-                                                          fetchcampuscontroller
-                                                                  .selectedCampus
-                                                                  .value
-                                                                  .isEmpty
-                                                              ? const Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .start,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding:
-                                                                          EdgeInsets.all(
-                                                                              8.0),
-                                                                      child: Icon(
-                                                                          CupertinoIcons
-                                                                              .circle_grid_hex),
-                                                                    ),
-                                                                    Text(
-                                                                        'Select Destination',
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Colors.black)),
-                                                                  ],
-                                                                )
-                                                              : Row(
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding: const EdgeInsets
-                                                                          .all(
-                                                                          8.0),
-                                                                      child: Icon(
-                                                                          CupertinoIcons
-                                                                              .arrow_branch),
-                                                                    ),
-                                                                    Text(
-                                                                      fetchcampuscontroller
-                                                                          .selectedCampus
-                                                                          .value!,
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              Colors.black),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                      isExpanded: true,
-                                                      iconSize: 30.0,
-                                                      style: TextStyle(
-                                                          color: Colors.black),
-                                                      items:
-                                                          fetchcampuscontroller
-                                                              .campusdataList
-                                                              .value
-                                                              .map(
-                                                        (val) {
-                                                          fetchcampuscontroller
-                                                                  .selectedCampus
-                                                                  .value =
-                                                              val.campusName!;
-                                                          return DropdownMenuItem<
-                                                              String>(
-                                                            value: val.campId,
+                                              child: DropdownButton<String>(
+                                                dropdownColor: Colors.white,
+                                                underline: Container(),
+                                                hint: fetchcampuscontroller
+                                                        .selectedCampus
+                                                        .value
+                                                        .isEmpty
+                                                    ? const Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 10),
                                                             child: Text(
-                                                                "${val.campusName}"),
-                                                          );
-                                                        },
-                                                      ).toList(),
-                                                      onChanged: (val) {
-                                                        setState(() {
-                                                          fetchcampuscontroller
-                                                              .campus_id
-                                                              .value = val!;
-                                                          print(
-                                                              "${fetchcampuscontroller.campus_id.value}");
-                                                          fetchCompanyController
-                                                              .companyList.value
-                                                              .clear();
-                                                          fetchCompanyController
-                                                              .selectedCompany
-                                                              .value = '';
-                                                          fetchCompanyController
-                                                              .fetchCompany(
-                                                                  campus_id:
-                                                                      fetchcampuscontroller
-                                                                          .campus_id
-                                                                          .value);
-                                                        });
-                                                      },
-                                                    )
-                                                  : Text(
-                                                      'No Campus available',
-                                                      style: TextStyle(
-                                                          color: Colors.black),
-                                                    ),
+                                                                'Select Campus',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black)),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : Row(
+                                                        children: [
+                                                          Text(
+                                                            fetchcampuscontroller
+                                                                .selectedCampus
+                                                                .value!,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                isExpanded: true,
+                                                iconSize: 30.0,
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                                items: fetchcampuscontroller
+                                                    .campusdataList.value
+                                                    .map(
+                                                  (val) {
+                                                    fetchcampuscontroller
+                                                            .selectedCampus
+                                                            .value =
+                                                        val.campusName!;
+                                                    return DropdownMenuItem<
+                                                        String>(
+                                                      value: val.campId,
+                                                      child: Text(
+                                                          "${val.campusName}"),
+                                                    );
+                                                  },
+                                                ).toList(),
+                                                onChanged: (val) {
+                                                  setState(() {
+                                                    fetchcampuscontroller
+                                                        .campus_id.value = val!;
+                                                    print(
+                                                        "${fetchcampuscontroller.campus_id.value}");
+                                                    fetchCompanyController
+                                                        .companyList.value
+                                                        .clear();
+                                                    fetchCompanyController
+                                                        .selectedCompany
+                                                        .value = '';
+                                                    fetchCompanyController
+                                                        .fetchCompany(
+                                                            campus_id:
+                                                                fetchcampuscontroller
+                                                                    .campus_id
+                                                                    .value);
+                                                  });
+                                                },
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -410,67 +390,87 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                           ),
                                         ),
                                         Obx(
-                                              () => Padding(
+                                          () => Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Container(
                                               height: 50.h,
                                               decoration: BoxDecoration(
                                                 color: Colors.white,
-                                                borderRadius: BorderRadius.circular(8.0),
-                                                border: Border.all(color: Colors.grey),
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                border: Border.all(
+                                                    color: Colors.grey),
                                               ),
-                                              child: fetchCompanyController.companyList.value.isNotEmpty
-                                                  ? DropdownButton<String>(
+                                              child: DropdownButton<String>(
                                                 dropdownColor: Colors.white,
                                                 underline: Container(),
-                                                hint: fetchCompanyController.selectedCompany.value.isEmpty
+                                                hint: fetchCompanyController
+                                                        .selectedCompany
+                                                        .value
+                                                        .isEmpty
                                                     ? const Row(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.all(8.0),
-                                                      child: Icon(CupertinoIcons.circle_grid_hex),
-                                                    ),
-                                                    Text(
-                                                      'Select Company',
-                                                      style: TextStyle(color: Colors.black),
-                                                    ),
-                                                  ],
-                                                )
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 10),
+                                                            child: Text(
+                                                              'Select Company',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )
                                                     : Row(
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(8.0),
-                                                      child: Icon(CupertinoIcons.arrow_branch),
-                                                    ),
-                                                    Text(
-                                                      fetchCompanyController.selectedCompany.value!,
-                                                      style: TextStyle(color: Colors.black),
-                                                    ),
-                                                  ],
-                                                ),
+                                                        children: [
+                                                          Text(
+                                                            fetchCompanyController
+                                                                .selectedCompany
+                                                                .value!,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                        ],
+                                                      ),
                                                 isExpanded: true,
                                                 iconSize: 30.0,
-                                                style: TextStyle(color: Colors.black),
-                                                items: fetchCompanyController.companyList.value.map((val) {
-                                                  return DropdownMenuItem<String>(
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                                items: fetchCompanyController
+                                                    .companyList.value
+                                                    .map((val) {
+                                                  return DropdownMenuItem<
+                                                      String>(
                                                     value: val.companyId,
-                                                    child: Text("${val.companyName}"),
+                                                    child: Text(
+                                                        "${val.companyName}"),
                                                   );
                                                 }).toList(),
                                                 onChanged: (val) {
-                                                  fetchCompanyController.company_id.value = val!;
-                                                  fetchCompanyController.selectedCompany.value =
-                                                      fetchCompanyController.companyList.value
-                                                          .firstWhere((company) => company.companyId == val)
+                                                  fetchCompanyController
+                                                      .company_id.value = val!;
+                                                  fetchCompanyController
+                                                          .selectedCompany
+                                                          .value =
+                                                      fetchCompanyController
+                                                          .companyList.value
+                                                          .firstWhere((company) =>
+                                                              company
+                                                                  .companyId ==
+                                                              val)
                                                           .companyName!;
                                                 },
-                                              )
-                                                  : Text(
-                                                'No Campus available',
-                                                style: TextStyle(color: Colors.black),
                                               ),
                                             ),
                                           ),

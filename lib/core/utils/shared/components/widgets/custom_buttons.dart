@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomElevatedBtn extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -11,6 +10,7 @@ class CustomElevatedBtn extends StatelessWidget {
   final double radius;
   final BorderSide? side;
   final String title;
+  final TextStyle? textStyle;
 
   const CustomElevatedBtn({
     Key? key,
@@ -22,7 +22,7 @@ class CustomElevatedBtn extends StatelessWidget {
     this.foregroundColor,
     this.child,
     this.radius = 10,
-    this.title = '',
+    this.title = '', this.textStyle,
   }) : super(key: key);
 
   @override
@@ -45,6 +45,7 @@ class CustomElevatedBtn extends StatelessWidget {
             title,
             style: const TextStyle(
               fontSize: 15,
+              color: Colors.white,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -94,32 +95,6 @@ class CustomTextBtn extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-    );
-  }
-}
-
-class SocialBtn extends StatelessWidget {
-  final void Function()? onTap;
-  final String image;
-
-  const SocialBtn({super.key, required this.image, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: 55,
-        height: 40,
-        padding: const EdgeInsets.all(8),
-        decoration: ShapeDecoration(
-          color: Colors.black54,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(6),
-          ),
-        ),
-        child: SvgPicture.asset(image),
-      ),
     );
   }
 }

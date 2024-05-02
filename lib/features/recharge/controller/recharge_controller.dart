@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sat_user_app_teckzy/features/home/view/home_screen.dart';
 
 
 import '../../../core/configs/styles/app_colors.dart';
@@ -10,13 +11,17 @@ import '../../../core/utils/helpers/cache_helper/cache_helper.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../core/utils/helpers/network/helpers/api_endpoints.dart';
+import '../../../core/utils/shared/components/widgets/custom_snackbar.dart';
 import '../../payment/model/payment_hit_model.dart';
 import '../../razor_pay/view/razor_pay_screen.dart';
+import '../../show_ticket/controller/show_ticket_controller.dart';
+import '../../show_ticket/view/show_ticket.dart';
 import '../model/recharge_hit_model.dart';
 import '../model/recharge_model.dart';
 import 'package:flutter/material.dart';
 
 class RechargeController extends GetxController {
+  final ShowTicketController showTicketController=ShowTicketController();
   var rechargeModel = RechargeModel().obs;
   var rechargeHitApiMidel = RechargeHitApiMidel().obs;
   var paymentHitApiMidel = PaymentHitApiMidel().obs;
@@ -44,30 +49,21 @@ class RechargeController extends GetxController {
         rechargeModel(RechargeModel.fromJson(responseData));
 
         if (rechargeModel.value.status == true) {
+
+
+          successLink.value = rechargeModel.value.successLink!;
+          print("link ${successLink.value} ");
+          CustomSnackBar.showCustomSnackBar(
+              title: "Processing",
+              message: "${rechargeModel.value.msg}");
+          Get.to(PaymentPage(
+            orderId: '${rechargeModel.value.paymentDetail!.first.orderId}',
+            amount: '${rechargeModel.value.paymentDetail!.first.amount}',
+            razorKey: '${rechargeModel.value.paymentDetail!.first.key}',
+            url: '${rechargeModel.value.successLink!}',
+            t_id: '${rechargeModel.value.tId!}',
+          ));
           print("success ");
-          Get.defaultDialog(
-            title: 'Processing',
-            textConfirm: 'Ok',
-            middleText: 'Payment Processing',
-            titleStyle: TextStyle(
-              fontSize: 18.sp, // Adjust the font size as needed
-              fontWeight: FontWeight.bold, // Adjust the font weight as needed
-            ),
-            buttonColor: AppColor.appMainColor, // Set the button color
-            radius: 10.0, // Set the border radius
-            onConfirm: () {
-              Get.back();
-              successLink.value = rechargeModel.value.successLink!;
-              print("link ${successLink.value} ");
-              Get.to(PaymentPage(
-                orderId: '${rechargeModel.value.paymentDetail!.first.orderId}',
-                amount: '${rechargeModel.value.paymentDetail!.first.amount}',
-                razorKey: '${rechargeModel.value.paymentDetail!.first.key}',
-                url: '${rechargeModel.value.successLink!}',
-                t_id: '${rechargeModel.value.tId!}',
-              ));
-            },
-          );
         } else {
           throw Exception('Status is not true');
         }
@@ -75,28 +71,20 @@ class RechargeController extends GetxController {
         final responseData = json.decode(response.body);
         rechargeModel(RechargeModel.fromJson(responseData));
         if (rechargeModel.value.status == "Failed") {
+          failedLink.value = rechargeModel.value.failedLink!;
+          hitPayment(
+              url: failedLink.value,
+              t_id: "${rechargeModel.value.tId}",
+              singnature: '',
+              order_id: '',
+              payment_id: '');
+          CustomSnackBar.showCustomErrorSnackBar(
+              title: "Failed",
+              message: "${rechargeModel.value.msg}");
+
+
           print("failed");
-          Get.defaultDialog(
-            title: 'Failed to process',
-            textConfirm: 'Ok',
-            middleText: '${rechargeModel.value.msg}',
-            titleStyle: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-            ),
-            buttonColor: AppColor.appMainColor,
-            radius: 10.0,
-            onConfirm: () {
-              Get.back();
-              failedLink.value = rechargeModel.value.failedLink!;
-              hitPayment(
-                  url: failedLink.value,
-                  t_id: "${rechargeModel.value.tId}",
-                  singnature: '',
-                  order_id: '',
-                  payment_id: '');
-            },
-          );
+
           print("failed to fetch category Item");
         } else {
           throw Exception('Status is not true');
@@ -136,47 +124,26 @@ class RechargeController extends GetxController {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseData = json.decode(response.body);
         paymentHitApiMidel(PaymentHitApiMidel.fromJson(responseData));
-
-        // if (paymentHitApiMidel.value.status == "Success") {
-        //   print("success ");
-        //   Get.defaultDialog(
-        //     title: '${paymentHitApiMidel.value.status}',
-        //     textConfirm: 'Ok',
-        //     middleText: '${paymentHitApiMidel.value.message}',
-        //     titleStyle: TextStyle(
-        //       fontSize: 18.sp, // Adjust the font size as needed
-        //       fontWeight: FontWeight.bold, // Adjust the font weight as needed
-        //     ),
-        //     buttonColor: AppColor.appMainColor, // Set the button color
-        //     radius: 10.0, // Set the border radius
-        //     onConfirm: () {
-        //       Get.back();
-        //       Get.off(HomeScreen(), transition: Transition.leftToRightWithFade);
-        //     },
-        //   );
-        // } else {
-        //   throw Exception('Status is not true');
-        // }
+        if (paymentHitApiMidel.value.status == "Success") {
+          CustomSnackBar.showCustomSnackBar(
+              title: "Payment Success",
+              message: "${paymentHitApiMidel.value.status}");
+          showTicketController.fetchShowTicket();
+          Get.to(const ShowTicketScreen(),
+              transition: Transition.leftToRightWithFade);
+        } else {
+          throw Exception('Status is not true');
+        }
       } else if (response.statusCode == 401) {
         final responseData = json.decode(response.body);
         paymentHitApiMidel(PaymentHitApiMidel.fromJson(responseData));
         if (paymentHitApiMidel.value.status == "Failed") {
           print("failed");
-          Get.defaultDialog(
-            title: '${paymentHitApiMidel.value.status}',
-            textConfirm: 'Ok',
-            middleText: '${paymentHitApiMidel.value.message}',
-            titleStyle: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-            ),
-            buttonColor: AppColor.appMainColor,
-            radius: 10.0,
-            onConfirm: () {
-              Get.back();
-            },
-          );
-          print("failed to fetch category Item");
+
+          CustomSnackBar.showCustomErrorSnackBar(
+              title: "Payment Failed",
+              message: "${paymentHitApiMidel.value.status}");
+          Get.off(HomeScreen(),transition: Transition.leftToRightWithFade);
         } else {
           throw Exception('Status is not true');
         }

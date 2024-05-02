@@ -11,12 +11,6 @@ import '../model/show_model.dart';
 
 class ShowTicketController extends GetxController {
   var showTicketModel = ShowTicketModel().obs;
-  @override
-  void onInit() {
-    super.onInit();
-    fetchShowTicket();
-  }
-
   Future<void> fetchShowTicket() async {
     const apiUrl = ApiEndPoints.baseURL + ApiEndPoints.showTicket;
     const apiToken = ApiEndPoints.apiToken;

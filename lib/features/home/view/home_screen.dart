@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-
 import '../../../../../core/configs/styles/app_colors.dart';
 import '../../../core/utils/shared/constants/assets_pathes.dart';
 import '../../buy_tickets/view/buy_ticket.dart';
@@ -32,7 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     homeController.determinePosition().then((value) {
       homeController.city.value = homeController.currentLocationName!.locality!;
-      homeController.locality.value = homeController.currentLocationName!.subLocality!;
+      homeController.locality.value =
+          homeController.currentLocationName!.subLocality!;
       // if ( homeController.city.value != null) {
       //   visibleCity=true;
       // }
@@ -49,49 +49,50 @@ class _HomeScreenState extends State<HomeScreen> {
           key: _scaffoldKey,
           drawer: const DrawerWidget(),
           bottomNavigationBar: Container(
-            height: 81
-                .h, // Total height of Container including the height of Text widgets
-            width: 360.w,
-            decoration: BoxDecoration(
-              color: AppColor.appMainColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(50.r),
-                topRight: Radius.circular(50.r),
-              ),
-            ),
-            child: Obx(() => Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Wallet Balance",
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    color: Colors.white,
-                    fontFamily: 'Inter-Regular',
-                  ),
+              height: 81
+                  .h, // Total height of Container including the height of Text widgets
+              width: 360.w,
+              decoration: BoxDecoration(
+                color: AppColor.appMainColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50.r),
+                  topRight: Radius.circular(50.r),
                 ),
-                SizedBox(width: 5.w),
-                (walletController.walletAmount.value != null &&
-                    walletController.walletAmount.value.isNotEmpty)
-                    ? Text(
-                  "Rs. ${walletController.walletAmount}",
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: Colors.white,
-                    fontFamily: 'Inter-Bold',
-                  ),
-                )
-                    : Text(
-                  "Rs. 0",
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: Colors.white,
-                    fontFamily: 'Inter-Bold',
-                  ),
-                )
-              ],
-            ),)
-          ),
+              ),
+              child: Obx(
+                () => Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Wallet Balance",
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        color: Colors.white,
+                        fontFamily: 'Inter-Regular',
+                      ),
+                    ),
+                    SizedBox(width: 5.w),
+                    (walletController.walletAmount.value != null &&
+                            walletController.walletAmount.value.isNotEmpty)
+                        ? Text(
+                            "Rs. ${walletController.walletAmount}",
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: Colors.white,
+                              fontFamily: 'Inter-Bold',
+                            ),
+                          )
+                        : Text(
+                            "Rs. 0",
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: Colors.white,
+                              fontFamily: 'Inter-Bold',
+                            ),
+                          )
+                  ],
+                ),
+              )),
           extendBodyBehindAppBar: true,
           body: Container(
               color: AppColor.whiteColor,
@@ -187,7 +188,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.asset(AssetsPathes.locationIcon),
+                          Icon(
+                            Icons.location_on_outlined,
+                            color: Colors.white,
+                            size: 25.sp,
+                          ),
                           SizedBox(width: 8.0.w),
                           Text(
                             "${homeController.city.value},${homeController.locality.value}",
@@ -234,51 +239,50 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.all(8.0.w),
-                                        child: InkWell(
-                                          onTap: () {
-                                            print("Clicked");
-                                            Get.to(() => BuyTicketScreen(),
-                                                transition: Transition
-                                                    .leftToRightWithFade);
-                                          },
-                                          child: Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 50.h,
-                                                width: 50.w,
-                                                child: Image.asset(
-                                                    AssetsPathes.BuyTicket),
-                                              ),
-                                              Text("Buy Ticket",
-                                                  style: TextStyle(
-                                                    fontSize: 15.sp,
-                                                    fontFamily: 'Inter-Regular',
-                                                  )),
-                                            ],
-                                          ),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 50.h,
+                                              width: 50.w,
+                                              child: IconButton(
+                                                  onPressed: () {
+                                                    print("Clicked");
+                                                    Get.to(
+                                                        () =>
+                                                            BuyTicketScreen(),
+                                                        transition: Transition
+                                                            .leftToRightWithFade);
+                                                  },
+                                                  icon:
+                                                      Icon(Icons.date_range,color: Colors.black,)),
+                                            ),
+                                            Text("Buy Ticket",
+                                                style: TextStyle(
+                                                  fontSize: 15.sp,
+                                                  fontFamily: 'Inter-Regular',
+                                                )),
+                                          ],
                                         ),
                                       ),
                                       Padding(
                                         padding: EdgeInsets.all(8.0.w),
-                                        child: InkWell(
-                                          onTap: () {
-                                            Get.to( FeederStatusScreen(),transition: Transition.leftToRightWithFade);
-                                          },
-                                          child: Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 50.h,
-                                                width: 50.w,
-                                                child: Image.asset(
-                                                    AssetsPathes.FeederStatus),
-                                              ),
-                                              Text("Feeder Status",
-                                                  style: TextStyle(
-                                                      fontSize: 15.sp,
-                                                      fontFamily:
-                                                          'Inter-Regular')),
-                                            ],
-                                          ),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 50.h,
+                                              width: 50.w,
+                                              child: IconButton(onPressed: () {
+                                                Get.to(FeederStatusScreen(),
+                                                    transition: Transition
+                                                        .leftToRightWithFade);
+                                              }, icon: Icon(CupertinoIcons.car_detailed,color: Colors.black,size: 25,)),
+                                            ),
+                                            Text("Feeder Status",
+                                                style: TextStyle(
+                                                    fontSize: 15.sp,
+                                                    fontFamily:
+                                                        'Inter-Regular')),
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -294,53 +298,45 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.all(8.0.w),
-                                        child: InkWell(
-                                          onTap: () {
-                                            print("Clicked");
-                                            Get.to(() => RechargeScreen(),
-                                                transition: Transition
-                                                    .leftToRightWithFade);
-                                          },
-                                          child: Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 50.h,
-                                                width: 50.w,
-                                                child: Image.asset(
-                                                    AssetsPathes.Recharge),
-                                              ),
-                                              Text("Recharge",
-                                                  style: TextStyle(
-                                                      fontSize: 15.sp,
-                                                      fontFamily:
-                                                          'Inter-Regular')),
-                                            ],
-                                          ),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 50.h,
+                                              width: 50.w,
+                                              child: IconButton(onPressed: () {
+                                                print("Clicked");
+                                                Get.to(() => RechargeScreen(),
+                                                    transition: Transition
+                                                        .leftToRightWithFade);
+                                              }, icon: const Icon(Icons.wallet,color: Colors.black,size: 25,)),
+                                            ),
+                                            Text("Recharge",
+                                                style: TextStyle(
+                                                    fontSize: 15.sp,
+                                                    fontFamily:
+                                                        'Inter-Regular')),
+                                          ],
                                         ),
                                       ),
                                       Padding(
                                         padding: EdgeInsets.all(8.0.w),
-                                        child: InkWell(
-                                          onTap: () {
-                                            Get.off(HistoryScreen(),
-                                                transition: Transition
-                                                    .leftToRightWithFade);
-                                          },
-                                          child: Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 50.h,
-                                                width: 50.w,
-                                                child: Image.asset(
-                                                    AssetsPathes.TravelHistory),
-                                              ),
-                                              Text("Travel History",
-                                                  style: TextStyle(
-                                                      fontSize: 15.sp,
-                                                      fontFamily:
-                                                          'Inter-Regular')),
-                                            ],
-                                          ),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 50.h,
+                                              width: 50.w,
+                                              child: IconButton(onPressed: () {
+                                                Get.off(HistoryScreen(),
+                                                    transition: Transition
+                                                        .leftToRightWithFade);
+                                              }, icon: Icon(Icons.history,size: 25,color: Colors.black,)),
+                                            ),
+                                            Text("Travel History",
+                                                style: TextStyle(
+                                                    fontSize: 15.sp,
+                                                    fontFamily:
+                                                        'Inter-Regular')),
+                                          ],
                                         ),
                                       ),
                                     ],

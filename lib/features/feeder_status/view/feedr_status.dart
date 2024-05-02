@@ -98,102 +98,6 @@ class _FeederStatusScreenState extends State<FeederStatusScreen> {
                         Obx(
                           () => Center(
                             child: Text(
-                              '${fetchRouteController.endLocation.value}',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: AppColor.whiteColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 50.0.sp, right: 50.0.sp, top: 15.0.sp),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Vehicle',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColor.yellowColor,
-                                ),
-                              ),
-                              Text(
-                                'Status',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColor.yellowColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Obx(() {
-                          if (feederStatusPickupController
-                              .feederStatusPickUpList.isEmpty) {
-                            return Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "No vehicle avalilable",
-                                  style: TextStyle(color: AppColor.whiteColor),
-                                ),
-                              ),
-                            );
-                          } else {
-                            // Display fetched data
-                            return Column(
-                              children: feederStatusPickupController
-                                  .feederStatusPickUpList
-                                  .map((feederStatus) {
-                                return Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 50.0.sp,
-                                      right: 50.0.sp,
-                                      top: 15.0.sp),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        feederStatus.data?.first.vehicleRegno ??
-                                            'N/A', // Access vehicleNo from Data object
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: AppColor.whiteColor,
-                                        ),
-                                      ),
-                                      Text(
-                                        feederStatus
-                                            .data?.first.vehicleStatus ??
-                                            'N/A', // Access vehicleStatus from Data object
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: AppColor.whiteColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
-                            );
-                          }
-                        }),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 400.w,
-                    height: 250.h,
-                    child: ListView(
-                      children: [
-                        Obx(
-                          () => Center(
-                            child: Text(
                               '${fetchRouteController.pickupLocation.value}',
                               style: TextStyle(
                                 fontSize: 16,
@@ -229,8 +133,104 @@ class _FeederStatusScreenState extends State<FeederStatusScreen> {
                           ),
                         ),
                         Obx(() {
+                          if (feederStatusPickupController
+                              .feederStatusPickList.value.isEmpty) {
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "No vehicle avalilable",
+                                  style: TextStyle(color: AppColor.whiteColor),
+                                ),
+                              ),
+                            );
+                          } else {
+                            // Display fetched data
+                            return Column(
+                              children: feederStatusPickupController
+                                  .feederStatusPickList.value
+                                  .map((feederStatus) {
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 50.0.sp,
+                                      right: 50.0.sp,
+                                      top: 15.0.sp),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        feederStatus.vehicleRegno ??
+                                            'N/A', // Access vehicleNo from Data object
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppColor.whiteColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        feederStatus
+                                            .vehicleStatus ??
+                                            'N/A', // Access vehicleStatus from Data object
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppColor.whiteColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            );
+                          }
+                        }),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 400.w,
+                    height: 250.h,
+                    child: ListView(
+                      children: [
+                        Obx(
+                          () => Center(
+                            child: Text(
+                              '${fetchRouteController.endLocation.value}',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: AppColor.whiteColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 50.0.sp, right: 50.0.sp, top: 15.0.sp),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Vehicle',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.yellowColor,
+                                ),
+                              ),
+                              Text(
+                                'Status',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.yellowColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Obx(() {
                           if (feederStatusEndController
-                              .feederStatusEndList.isEmpty) {
+                              .feederStatusDestinationList.isEmpty) {
                             return Center(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -244,7 +244,7 @@ class _FeederStatusScreenState extends State<FeederStatusScreen> {
                             // Display fetched data
                             return Column(
                               children: feederStatusEndController
-                                  .feederStatusEndList
+                                  .feederStatusDestinationList.value
                                   .map((feederStatus) {
                                 return Padding(
                                   padding: EdgeInsets.only(
@@ -256,7 +256,7 @@ class _FeederStatusScreenState extends State<FeederStatusScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        feederStatus.data?.first.vehicleRegno ??
+                                        feederStatus.vehicleRegno ??
                                             'N/A',
                                         // Access vehicleNo from the first Data object in the list
                                         style: TextStyle(
@@ -265,8 +265,7 @@ class _FeederStatusScreenState extends State<FeederStatusScreen> {
                                         ),
                                       ),
                                       Text(
-                                        feederStatus
-                                                .data?.first.vehicleStatus ??
+                                        feederStatus.vehicleStatus  ??
                                             'N/A',
                                         // Access vehicleStatus from the first Data object in the list
                                         style: TextStyle(

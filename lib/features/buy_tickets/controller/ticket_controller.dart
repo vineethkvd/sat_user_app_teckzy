@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../core/utils/helpers/cache_helper/cache_helper.dart';
+import '../../../core/utils/helpers/network/helpers/api_endpoints.dart';
 import '../model/ticket_model.dart';
 import 'package:http/http.dart' as http;
 
 class TicketController extends GetxController {
   var message = ''.obs;
   var routeId = ''.obs;
+
   var choosenMetro = ''.obs;
   var choosenCampus = ''.obs;
   var perTicket = ''.obs;
@@ -25,17 +27,28 @@ class TicketController extends GetxController {
   RxBool isMonthValid = false.obs;
   //PRICE
   RxInt count = 1.obs;
+  //
+  // void calculateNext24HoursValidity() {
+  //   DateTime currentDate = DateTime.now();
+  //   DateTime next24Hours = currentDate.add(Duration(hours: 24));
+  //
+  //   // Format the next 24 hours date as "dd/mm/yyyy"
+  //   String formattedDate = '${next24Hours.day.toString().padLeft(2, '0')}/'
+  //       '${next24Hours.month.toString().padLeft(2, '0')}/'
+  //       '${next24Hours.year}';
+  //   dailyValidity.value = formattedDate;
+  // }
 
-  void calculateNext24HoursValidity() {
+  void calculateCurrentDateValidity() {
     DateTime currentDate = DateTime.now();
-    DateTime next24Hours = currentDate.add(Duration(hours: 24));
 
-    // Format the next 24 hours date as "dd/mm/yyyy"
-    String formattedDate = '${next24Hours.day.toString().padLeft(2, '0')}/'
-        '${next24Hours.month.toString().padLeft(2, '0')}/'
-        '${next24Hours.year}';
+    // Format the current date as "dd/mm/yyyy"
+    String formattedDate = '${currentDate.day.toString().padLeft(2, '0')}/'
+        '${currentDate.month.toString().padLeft(2, '0')}/'
+        '${currentDate.year}';
     dailyValidity.value = formattedDate;
   }
+
 
   void calculateNextWeekValidity() {
     DateTime currentDate = DateTime.now();
@@ -58,7 +71,7 @@ class TicketController extends GetxController {
   }
 
   Future<void> fetchTicket() async {
-    final apiUrl = 'http://teckzy.in/satapi/restapi/userapi/ticket.php';
+    const apiUrl = ApiEndPoints.baseURL + ApiEndPoints.ticket;
     const apiToken = "SAT@2024";
 
     final headers = {'Content-Type': 'application/json'};

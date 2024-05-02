@@ -17,6 +17,7 @@ import '../view/register/register_screen.dart';
 class LoginController extends GetxController {
   var loginModel = LoginModel().obs;
   final Rx<GlobalKey<FormState>> _formKey = GlobalKey<FormState>().obs;
+  RxBool loading = false.obs;
 
   Rx<GlobalKey<FormState>> get formKey => _formKey;
   final Rx<TextEditingController> phone = TextEditingController().obs;
@@ -28,12 +29,14 @@ class LoginController extends GetxController {
   final Rx<OtpFieldController> otpFieldController = OtpFieldController().obs;
 
   Future<void> verifyMobile({required String phone}) async {
+    loading.value = true;
+    String phoneNumber = phone.toString();
     const apiUrl = ApiEndPoints.baseURL + ApiEndPoints.login;
     const apiToken = ApiEndPoints.apiToken;
     final headers = {'Content-Type': 'application/json'};
     final requestData = {
       "api_key": apiToken,
-      "phone": phone.trim(),
+      "phone": phoneNumber.toString(),
     };
     final jsonBody = json.encode(requestData);
 
@@ -112,6 +115,8 @@ class LoginController extends GetxController {
       throw Exception('Socket Exception: $e');
     } catch (e) {
       throw Exception('Error: $e');
+    } finally {
+      loading.value = false;
     }
   }
 }

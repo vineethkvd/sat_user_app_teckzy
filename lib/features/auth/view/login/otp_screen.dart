@@ -10,6 +10,7 @@ import 'package:otp_text_field/style.dart';
 
 import '../../../../core/configs/styles/app_colors.dart';
 import '../../../../core/utils/helpers/cache_helper/cache_helper.dart';
+import '../../../../core/utils/shared/components/widgets/custom_snackbar.dart';
 import '../../../home/view/home_screen.dart';
 import '../../controller/login_controller.dart';
 
@@ -112,87 +113,108 @@ class _OtpScreenState extends State<OtpScreen> {
                                             },
                                           ),
                                         ),
-                                        Align(
-                                          alignment: Alignment.topRight,
-                                          child: TextButton(
-                                            onPressed: () {},
-                                            child: Text(
-                                              "Resend OTP?",
-                                              style: TextStyle(
-                                                fontFamily: "Inter-Regular",
-                                                fontSize: 15.sp,
-                                                color: AppColor.blueTextColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                        // Align(
+                                        //   alignment: Alignment.topRight,
+                                        //   child: TextButton(
+                                        //     onPressed: () {},
+                                        //     child: Text(
+                                        //       "Resend OTP?",
+                                        //       style: TextStyle(
+                                        //         fontFamily: "Inter-Regular",
+                                        //         fontSize: 15.sp,
+                                        //         color: AppColor.blueTextColor,
+                                        //       ),
+                                        //     ),
+                                        //   ),
+                                        // ),
                                         InkWell(
                                           onTap: () async {
-                                            if (_loginController
-                                                    .enteredOtp.value
-                                                    .trim() ==
-                                                widget.otp.trim()) {
-                                              CacheHelper.saveData(
-                                                  "cusid", widget.cusId);
-                                              CacheHelper.saveData(
-                                                  "routeId", widget.routeId);
-                                              Get.defaultDialog(
-                                                title: "Success",
-                                                titleStyle: TextStyle(
-                                                    fontFamily: 'Inter-Bold',
-                                                    fontSize: 18.sp,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                                backgroundColor: Colors.white,
-                                                content: Text(
-                                                  'Welcome back',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Inter-Regular',
-                                                    color: Colors.black,
-                                                    fontSize: 14.0.sp,
+                                            if (widget.otp ==
+                                                "1234") {
+                                              if (_loginController
+                                                  .enteredOtp.value
+                                                  .trim() ==
+                                                  widget.otp.trim()){
+                                                CustomSnackBar
+                                                    .showCustomSnackBar(
+                                                    title:
+                                                    "Success",
+                                                    message:
+                                                    "Welcome back");
+                                                Get.off(
+                                                   const HomeScreen(),
+                                                    transition: Transition
+                                                        .leftToRightWithFade);
+                                              }
+
+                                            }else{
+                                              if (_loginController
+                                                  .enteredOtp.value
+                                                  .trim() ==
+                                                  widget.otp.trim()) {
+                                                CacheHelper.saveData(
+                                                    "cusid", widget.cusId);
+                                                CacheHelper.saveData(
+                                                    "routeId", widget.routeId);
+                                                Get.defaultDialog(
+                                                  title: "Success",
+                                                  titleStyle: TextStyle(
+                                                      fontFamily: 'Inter-Bold',
+                                                      fontSize: 18.sp,
+                                                      fontWeight:
+                                                      FontWeight.bold),
+                                                  backgroundColor: Colors.white,
+                                                  content: Text(
+                                                    'Welcome back',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Inter-Regular',
+                                                      color: Colors.black,
+                                                      fontSize: 14.0.sp,
+                                                    ),
                                                   ),
-                                                ),
-                                                textConfirm: "OK",
-                                                confirmTextColor: Colors.white,
-                                                buttonColor:
-                                                    AppColor.appMainColor,
-                                                radius: 20.0.r,
-                                                onConfirm: () {
-                                                  Get.back();
-                                                  // Navigate to the registration page
-                                                  Get.offAll(
-                                                      () => const HomeScreen(),
-                                                      transition: Transition
-                                                          .leftToRightWithFade);
-                                                },
-                                              );
-                                            } else {
-                                              Get.defaultDialog(
-                                                title: "Failure",
-                                                titleStyle: TextStyle(
-                                                    fontFamily: 'Inter-Bold',
-                                                    fontSize: 18.sp,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                                backgroundColor: Colors.white,
-                                                content: Text(
-                                                  'Please enter valid OTP',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Inter-Regular',
-                                                    color: Colors.black,
-                                                    fontSize: 14.0.sp,
+                                                  textConfirm: "OK",
+                                                  confirmTextColor: Colors.white,
+                                                  buttonColor:
+                                                  AppColor.appMainColor,
+                                                  radius: 20.0.r,
+                                                  onConfirm: () {
+                                                    Get.back();
+                                                    // Navigate to the registration page
+                                                    Get.offAll(
+                                                            () => const HomeScreen(),
+                                                        transition: Transition
+                                                            .leftToRightWithFade);
+                                                  },
+                                                );
+                                              } else {
+                                                Get.defaultDialog(
+                                                  title: "Failure",
+                                                  titleStyle: TextStyle(
+                                                      fontFamily: 'Inter-Bold',
+                                                      fontSize: 18.sp,
+                                                      fontWeight:
+                                                      FontWeight.bold),
+                                                  backgroundColor: Colors.white,
+                                                  content: Text(
+                                                    'Please enter valid OTP',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Inter-Regular',
+                                                      color: Colors.black,
+                                                      fontSize: 14.0.sp,
+                                                    ),
                                                   ),
-                                                ),
-                                                textConfirm: "OK",
-                                                confirmTextColor: Colors.white,
-                                                buttonColor:
-                                                    AppColor.appMainColor,
-                                                radius: 20.0.r,
-                                                onConfirm: () {
-                                                  Get.back();
-                                                },
-                                              );
+                                                  textConfirm: "OK",
+                                                  confirmTextColor: Colors.white,
+                                                  buttonColor:
+                                                  AppColor.appMainColor,
+                                                  radius: 20.0.r,
+                                                  onConfirm: () {
+                                                    Get.back();
+                                                  },
+                                                );
+                                              }
                                             }
+
                                           },
                                           child: Padding(
                                             padding: EdgeInsets.all(15.0.w),

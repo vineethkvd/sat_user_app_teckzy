@@ -27,6 +27,7 @@ class _ShowTicketScreenState extends State<ShowTicketScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    showTicketController. fetchShowTicket();
   }
 
   @override
@@ -99,25 +100,25 @@ class _ShowTicketScreenState extends State<ShowTicketScreen> {
                           itemBuilder: (context, index) {
                             TicketData ticketData = showTicketController
                                 .showTicketModel.value.ticketData![index];
-                            return Padding(
-                              padding: EdgeInsets.all(15.0.w),
-                              child: InkWell(
-                                onTap: () {
-                                  Get.to(
-                                      ShowQrScreen(
-                                        image: "${ticketData.ticketQrCode}",
-                                        expiry: '${ticketData.ticketValid}',
-                                        type: '${ticketData.ticketType}',
-                                        place:
-                                            '${ticketData.pickup} - ${ticketData.destination}',
-                                      ),
-                                      transition:
-                                          Transition.leftToRightWithFade);
-                                },
+                            return InkWell(
+                              onTap: () {
+                                Get.to(
+                                    ShowQrScreen(
+                                      image: "${ticketData.ticketQrCode}",
+                                      expiry: '${ticketData.ticketValid}',
+                                      type: '${ticketData.ticketType}',
+                                      place:
+                                          '${ticketData.pickup} - ${ticketData.destination}',
+                                    ),
+                                    transition:
+                                        Transition.leftToRightWithFade);
+                              },
+                              child: Padding(
+                                padding:  EdgeInsets.symmetric(horizontal: 15.sp,vertical: 6.sp),
                                 child: Container(
                                   height: 130.h,
-                                  width: 310.w,
-                                  decoration: BoxDecoration(
+                                  width: Get.width * 0.65.w,
+                                  decoration: const BoxDecoration(
                                     color: AppColor.brownColor,
                                   ),
                                   child: Row(
@@ -126,34 +127,23 @@ class _ShowTicketScreenState extends State<ShowTicketScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.all(5.w),
-                                                child: Text(
-                                                    '${ticketData.pickup} - ${ticketData.destination}'),
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.all(3.w),
-                                                child: Text(
-                                                    '${ticketData.ticketType}'),
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.all(3.w),
-                                                child: Text(
-                                                    '${ticketData.ticketCreatDate}'),
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.all(3.w),
-                                                child: Text(
-                                                    '${ticketData.ticketValid}'),
-                                              ),
-                                            ]),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                    '${ticketData.pickup} - ${ticketData.destination}',style: TextStyle(fontSize: 14.sp,color: Colors.black),),
+                                                Text(
+                                                    'Type: ${ticketData.ticketType}',style: TextStyle(fontSize: 12.sp,color: Colors.black)),
+                                                Text(
+                                                    'Validity: ${ticketData.ticketValid}',style: TextStyle(fontSize: 12.sp,color: Colors.black)),
+                                              ]),
+                                        ),
                                       ),
                                       Column(
                                           mainAxisAlignment:
@@ -166,7 +156,7 @@ class _ShowTicketScreenState extends State<ShowTicketScreen> {
                                               width: 123.w,
                                               child: CachedNetworkImage(
                                                 imageUrl:
-                                                   "https://${ticketData.ticketQrCode.toString()}",
+                                                    "https://${ticketData.ticketQrCode.toString()}",
                                                 placeholder: (context, url) =>
                                                     const CupertinoActivityIndicator(), // Placeholder widget while loading
                                                 errorWidget: (context, url,

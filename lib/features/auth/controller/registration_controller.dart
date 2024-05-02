@@ -3,17 +3,18 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../core/utils/helpers/network/helpers/api_endpoints.dart';
-import '../../../core/utils/helpers/network/internet_checker.dart';
+
 import '../model/register_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class RegistrationController extends GetxController {
-  final NetworkInfo networkInfo = NetworkInfoImpl();
+
 
   final Rx<GlobalKey<FormState>> _formKey = GlobalKey<FormState>().obs;
 
   Rx<GlobalKey<FormState>> get formKey => _formKey;
+  RxBool loading = false.obs;
   final Rx<TextEditingController> name = TextEditingController().obs;
   final Rx<TextEditingController> email = TextEditingController().obs;
   final Rx<TextEditingController> phone = TextEditingController().obs;
@@ -30,6 +31,7 @@ class RegistrationController extends GetxController {
     required String campus_id,
     required String company_id,
   }) async {
+    loading.value = true;
     // if (await networkInfo.isConnected) {
     //   // Device is connected to the internet
     //   // Perform actions that require internet connection
@@ -93,6 +95,8 @@ class RegistrationController extends GetxController {
     } catch (e) {
       print('Error: $e');
       throw Exception('Error: $e');
+    }finally{
+      loading.value = false;
     }
   }
 

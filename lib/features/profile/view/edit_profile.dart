@@ -231,8 +231,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                             .map((item) => DropdownMenuItem<
                                                     DropdownItemsModel>(
                                                   value: item,
-                                                  child: Text(
-                                                      item.metroCampus ?? ''),
+                                                  child: Expanded(
+                                                    child: Text(
+                                                        overflow: TextOverflow.fade,
+                                                        maxLines: 1,
+                                                        softWrap: false,
+                                                        item.metroCampus ?? ''),
+                                                  ),
                                                 ))
                                             .toList(),
                                         onChanged: (selectedItem) {

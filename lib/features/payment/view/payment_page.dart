@@ -160,14 +160,15 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
                         ),
                         Expanded(
                           child: Center(
-                            child: Text(
-                              'Pay with Wallet',
-                              style: TextStyle(
-                                color: AppColor.whiteColor,
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            child:Text(
+                                    'Pay with Wallet',
+                                    style: TextStyle(
+                                      color: AppColor.whiteColor,
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                               ,
                           ),
                         ),
                       ],
@@ -213,14 +214,14 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
                       ),
                       Expanded(
                         child: Center(
-                          child: Text(
+                          child: paymentController.loading.value?Text(
                             'Pay with your bank',
                             style: TextStyle(
                               color: AppColor.whiteColor,
                               fontSize: 15.sp,
                               fontWeight: FontWeight.bold,
                             ),
-                          ),
+                          ):CupertinoActivityIndicator(),
                         ),
                       ),
                     ],

@@ -5,10 +5,11 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
-
 import '../../../core/configs/styles/app_colors.dart';
+import '../../../core/utils/shared/components/widgets/custom_snackbar.dart';
 import '../../payment/controller/payment_controller.dart';
 import '../../recharge/controller/recharge_controller.dart';
+import '../../show_ticket/controller/show_ticket_controller.dart';
 import '../../show_ticket/view/show_ticket.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -34,6 +35,8 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   late Razorpay _razorpay;
   final PaymentController paymentController = Get.put(PaymentController());
+  final ShowTicketController showTicketController =
+  Get.put(ShowTicketController());
   @override
   void initState() {
     super.initState();
@@ -76,37 +79,13 @@ class _PaymentPageState extends State<PaymentPage> {
   //   Get.off(HomeScreen(),transition: Transition.leftToRightWithFade);
   // }
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    Get.defaultDialog(
-      title: 'Payment Success',
-      textConfirm: 'Ok',
-      middleText: 'Payment Successful',
-      titleStyle: TextStyle(
-        fontSize: 18.sp, // Adjust the font size as needed
-        fontWeight: FontWeight.bold, // Adjust the font weight as needed
-      ),
-      buttonColor: AppColor.appMainColor, // Set the button color
-      radius: 10.0, // Set the border radius
-      onConfirm: () {
-        Get.back();
-        print("${widget.url}");
-        paymentController.hitPayment(
-            url: widget.url,
-            t_id: widget.t_id,
-            singnature: response.signature!,
-            order_id: response.orderId!,
-            payment_id: response.paymentId!);
-        if (paymentController.paymentHitApiMidel.value.status == "Success") {
-          print("Sigm  hvhbjjb${response.signature}");
-          Get.back();
-          Get.off(const ShowTicketScreen(),
-              transition: Transition.leftToRightWithFade);
-        }
-      },
-    );
-    // Fluttertoast.showToast(
-    //     msg: 'Payment Success: ' + response.paymentId!,
-    //     toastLength: Toast.LENGTH_SHORT,
-    //     gravity: ToastGravity.BOTTOM);
+    paymentController.hitPayment(
+        url: widget.url,
+        t_id: widget.t_id,
+        singnature: response.signature!,
+        order_id: response.orderId!,
+        payment_id: response.paymentId!);
+    showTicketController.fetchShowTicket();
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {

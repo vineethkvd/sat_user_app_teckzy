@@ -5,61 +5,60 @@ import 'package:http/http.dart' as http;
 
 import '../../../core/utils/helpers/cache_helper/cache_helper.dart';
 import '../../../core/utils/helpers/network/helpers/api_endpoints.dart';
+import '../../../core/utils/helpers/network/helpers/app_exceptions.dart';
+import '../../../core/utils/helpers/network/helpers/base_client.dart';
+import '../../../core/utils/helpers/network/helpers/base_controller.dart';
+import '../../../core/utils/helpers/network/helpers/dialog_helper.dart';
 import '../model/feedr_status_pickup_model.dart'; // Import your model class
 
 class FeederStatusPickUpController extends GetxController {
-  String msg = ''; // Directly use String for msg
-
-  var feederStatusPickUpList = <FeederStatusPickUpModel>[].obs;
+  var feederStatusPickUpModel = FeederStatusPickUpModel().obs;
+  var feederStatusPickList = <Data>[].obs;
 
   Future<void> fetchFeederStatusPickup({required String pickUpPoint}) async {
+    final baseController = BaseController();
+    // baseController.showLoading('Fetching slider data...');
     const apiUrl = ApiEndPoints.baseURL + ApiEndPoints.feederStatusPickup;
     const apiToken = ApiEndPoints.apiToken;
     var routeId = await CacheHelper.getData('routeId');
-    print("$routeId");
+    print("base :$apiUrl");
+    print("$pickUpPoint");
 
-    final headers = {'Content-Type': 'application/json'};
     final requestData = {
-      "api_key":apiToken,
-      "route_id":routeId,
-      "pickup_point":pickUpPoint
+      "api_key": apiToken,
+      "route_id": routeId,
+      "pickup_point": pickUpPoint
     };
-    final jsonBody = json.encode(requestData);
-
+    print("pickUpPoint$pickUpPoint");
     try {
-      final response = await http.post(Uri.parse(apiUrl), headers: headers, body: jsonBody);
+      final baseClient = BaseClient();
+      var response = await baseClient.post(apiUrl, requestData);
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        final feederStatusPickUpModel = FeederStatusPickUpModel.fromJson(responseData);
+        feederStatusPickUpModel(FeederStatusPickUpModel.fromJson(responseData));
 
-        if (feederStatusPickUpModel.status != null && feederStatusPickUpModel.status == true) {
-          msg = feederStatusPickUpModel.msg ?? '';
-
-          // Convert each Data object into a FeederStatusModel object
-          if (feederStatusPickUpModel.data != null) {
-            feederStatusPickUpList.assignAll(feederStatusPickUpModel.data!.map((data) {
-              return FeederStatusPickUpModel(
-                status: feederStatusPickUpModel.status,
-                msg: feederStatusPickUpModel.msg,
-                data: [data], // Wrap the Data object in a list
-              );
-            }));
-          } else {
-            throw Exception('Data is null in the response');
-          }
+        if (feederStatusPickUpModel.value.status == true) {
+          print("success");
+          feederStatusPickList.value.clear();
+          feederStatusPickList
+              .assignAll(feederStatusPickUpModel.value.data ?? []);
         } else {
           throw Exception('Status is not true');
         }
       } else {
-        throw Exception('Request failed with status: ${response.statusCode}');
+        throw Exception('Failed to fetch slider data');
       }
-    } on http.ClientException catch (e) {
-      throw Exception('HTTP Client Exception: $e');
-    } on SocketException catch (e) {
-      throw Exception('Socket Exception: $e');
-    } catch (e) {
-      throw Exception('Error: $e');
+    } catch (error) {
+      if (error is BadRequestException) {
+        var apiError = json.decode(error.message!);
+        DialogHelper.showErroDialog(description: apiError["reason"]);
+      } else {
+        baseController.handleError(error);
+      }
+    } finally {
+      // baseController.hideLoading();
+      // loading.value = true;
     }
   }
 }

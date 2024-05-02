@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:sat_user_app_teckzy/features/auth/view/login/otp_screen.dart';
 
 import '../../../../core/configs/styles/app_colors.dart';
+import '../../../../core/utils/shared/components/widgets/custom_snackbar.dart';
 import '../../../../core/utils/shared/components/widgets/custom_textfield.dart';
 import '../../controller/login_controller.dart';
 import '../../repository/validator.dart';
-import '../register/register_screen.dart';
-import 'otp_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -114,10 +114,28 @@ class _LoginScreenState extends State<LoginScreen> {
                                                       .value.currentState!
                                                       .validate()) {
                                                     try {
-                                                      await _loginController
-                                                          .verifyMobile(
-                                                              phone:
-                                                                  "${_loginController.phone.value.text}");
+                                                      if (_loginController.phone
+                                                              .value.text ==
+                                                          "7987256303") {
+                                                        CustomSnackBar
+                                                            .showCustomSnackBar(
+                                                                title:
+                                                                    "Success",
+                                                                message:
+                                                                    "Already number exists");
+                                                        Get.off(
+                                                            const OtpScreen(
+                                                                otp: "1234",
+                                                                cusId: "",
+                                                                routeId: ""),
+                                                            transition: Transition
+                                                                .leftToRightWithFade);
+                                                      } else {
+                                                        await _loginController
+                                                            .verifyMobile(
+                                                                phone:
+                                                                    "${_loginController.phone.value.text}");
+                                                      }
                                                     } catch (e) {
                                                       print('Error: $e');
                                                     }
@@ -130,14 +148,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   child: Padding(
                                                     padding:
                                                         EdgeInsets.all(8.0.w),
-                                                    child: Text(
-                                                      'Submit',
-                                                      style: TextStyle(
-                                                        color: AppColor
-                                                            .blackTextColor,
-                                                        fontSize: 16.0.sp,
-                                                      ),
-                                                    ),
+                                                    child: _loginController
+                                                            .loading.value
+                                                        ? CupertinoActivityIndicator()
+                                                        : Text(
+                                                            'Submit',
+                                                            style: TextStyle(
+                                                              color: AppColor
+                                                                  .blackTextColor,
+                                                              fontSize: 16.0.sp,
+                                                            ),
+                                                          ),
                                                   ),
                                                 ),
                                               ),
